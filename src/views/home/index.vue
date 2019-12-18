@@ -1,5 +1,9 @@
 <template>
-  <div>主页面</div>
+  <div>
+      <div class="login">
+          <span>主页面</span>
+      </div>
+      </div>
 </template>
 
 <script>
