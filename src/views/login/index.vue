@@ -52,24 +52,26 @@ export default {
     }
   },
   methods: {
-    submitLogin () {
-      this.$refs.myForm.validate((isOK) => {
+    submitLogin (isOK) {
+      if (isOK) {
+        this.$refs.myForm.validate((isOK) => {
         // console.log('请先调用接口')
-        this.$axios({
-          url: '/authorizations',
-          method: 'post',
-          data: this.loginForm
-        }).then(result => {
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.loginForm
+          }).then(result => {
           // console.log(result)
-          window.localStorage.setItem('user-token', result.data.data.token)
-          this.$router.push('/')
-        }).catch(() => {
-          this.$message({
-            message: '您的手机号或验证码不正确',
-            type: 'warning'
+            window.localStorage.setItem('user-token', result.data.data.token)
+            this.$router.push('/')
+          }).catch(() => {
+            this.$message({
+              message: '您的手机号或验证码不正确',
+              type: 'warning'
+            })
           })
         })
-      })
+      }
     }
   }
 }
