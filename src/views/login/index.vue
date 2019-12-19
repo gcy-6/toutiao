@@ -62,8 +62,12 @@ export default {
         }).then(result => {
           // console.log(result)
           window.localStorage.setItem('user-token', result.data.data.token)
-        }).catch(error => {
-          console.log(error)
+          this.$router.push('/')
+        }).catch(() => {
+          this.$message({
+            message: '您的手机号或验证码不正确',
+            type: 'warning'
+          })
         })
       })
     }
