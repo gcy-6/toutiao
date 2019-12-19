@@ -53,8 +53,18 @@ export default {
   },
   methods: {
     submitLogin () {
-      this.$refs.myForm.validate(function (isOK) {
-        console.log('请先调用接口')
+      this.$refs.myForm.validate((isOK) => {
+        // console.log('请先调用接口')
+        this.$axios({
+          url: '/authorizations',
+          method: 'post',
+          data: this.loginForm
+        }).then(result => {
+          // console.log(result)
+          window.localStorage.setItem('user-token', result.data.data.token)
+        }).catch(error => {
+          console.log(error)
+        })
       })
     }
   }
