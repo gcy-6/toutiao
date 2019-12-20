@@ -7,12 +7,12 @@
     <el-col class="right" :span="4">
       <el-row type="flex" justify="end" align="middle">
         <img :src="!userInfo.photo?userInfo.photo:defaultImg" alt />
-        <el-dropdown>
+        <el-dropdown @command="handle">
           <span>{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>git地址</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command="info">个人信息</el-dropdown-item>
+            <el-dropdown-item command="git">git地址</el-dropdown-item>
+            <el-dropdown-item command="lgout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -42,6 +42,17 @@ export default {
       // console.log(this.userInfo)
       // console.log(result)
     })
+  },
+  methods: {
+    handle (command) {
+      if (command === 'lgout') {
+        // 清除令牌
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/shuiruohanyu/89heimatoutiao'
+      }
+    }
   }
 }
 </script>
