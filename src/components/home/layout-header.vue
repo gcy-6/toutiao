@@ -6,9 +6,9 @@
     </el-col>
     <el-col class="right" :span="4">
       <el-row type="flex" justify="end" align="middle">
-        <img src="../../assets/img/avatar.jpg" alt />
+        <img :src="!userInfo.photo?userInfo.photo:defaultImg" alt />
         <el-dropdown>
-          <span>hhh</span>
+          <span>{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人信息</el-dropdown-item>
             <el-dropdown-item>git地址</el-dropdown-item>
@@ -21,7 +21,29 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      userInfo: {},
+      // 图片限制大小 小于10k的时候会转成base64字符串，而大于10k的时候会改变路径拷贝到静态目录下
+      // img死地址，动态地址的话，默认情况下不会转为base64 也不会拷贝
+      defaultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  created () {
+    let token = window.localStorage.getItem('user-token')
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(result => {
+      this.userInfo = result.data.data
+      // console.log(this.userInfo)
+      // console.log(result)
+    })
+  }
+}
 </script>
 
 <style lang='less' scoped>
