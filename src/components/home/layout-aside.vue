@@ -17,10 +17,10 @@
         </el-submenu>
         <el-submenu index='2'>
           <span slot="title">粉丝管理</span>
-          <el-menu-item index='/picture'>图文数据</el-menu-item>
-          <el-menu-item index='/fansinfo'>粉丝概况</el-menu-item>
-          <el-menu-item index='/fanslife'>粉丝画像</el-menu-item>
-          <el-menu-item index='fanslist'>粉丝列表</el-menu-item>
+          <el-menu-item index='/home/picture'>图文数据</el-menu-item>
+          <el-menu-item index='/home/fansinfo'>粉丝概况</el-menu-item>
+          <el-menu-item index='/home/fanslife'>粉丝画像</el-menu-item>
+          <el-menu-item index='/home/fanslist'>粉丝列表</el-menu-item>
         </el-submenu>
         <el-menu-item >
             账户信息
