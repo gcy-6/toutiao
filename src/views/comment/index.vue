@@ -6,7 +6,7 @@
       </bread-crumb>
       <el-table :data='list' >
           <el-table-column prop='title' label="标题" width=700></el-table-column>
-          <el-table-column :formatter='formatterBool' prop='status' label="评论状态"></el-table-column>
+          <el-table-column :formatter="formatterBool" prop='comment_status' label="评论状态"></el-table-column>
           <el-table-column prop='total_comment_count' label="总评论数"></el-table-column>
           <el-table-column prop='fans_comment_count' label="粉丝评论数"></el-table-column>
           <el-table-column label="操作">
