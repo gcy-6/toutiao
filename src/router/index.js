@@ -22,6 +22,9 @@ const routes = [
       path: 'comment',
       // component: Comment
       component: () => import('../views/comment')
+    }, {
+      path: 'material',
+      component: () => import('../views/material')
     }]
   },
   {
