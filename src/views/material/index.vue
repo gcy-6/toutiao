@@ -1,8 +1,21 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+
+    <el-row type='flex' justify='end'>
+      <el-upload :show-file-list='false' :http-request='uploadImg' action="abc">
+        <el-button size="small" type="primary">文件上传</el-button>
+      </el-upload>
+    </el-row>
+
+    <!-- <el-row type='flex' justify="end">
+        <el-upload :http-request="uploadImg" :show-file-list="false">
+              <el-button  size="small" type="primary">点击上传</el-button>
+        </el-upload>
+    </el-row> -->
+
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部" name="all">
         <div class="img-list">
@@ -52,6 +65,7 @@
 export default {
   data () {
     return {
+      loading: false,
       activeName: 'all',
       list: [],
       page: {
@@ -62,6 +76,33 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      this.loading = true
+      let form = new FormData()
+      form.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data: form
+      }).then(result => {
+        this.loading = false
+        this.getAllMaterial()
+      })
+    },
+    // uploadImg (params) {
+    //   this.loading = true // 打开进度条
+    //   let form = new FormData()
+    //   form.append('image', params.file) // 添加文件到formData
+    //   this.$axios({
+    //     method: 'post',
+    //     url: '/user/images',
+    //     data: form // formData数据
+    //   }).then(result => {
+    //     //   说明已经上传成功了一张图片
+    //     this.loading = false // 关闭进度条
+    //     this.getAllMaterial()
+    //   })
+    // },
     changePage (newPage) {
       this.page.currentPage = newPage
       this.getAllMaterial()
