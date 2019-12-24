@@ -20,10 +20,13 @@
       <el-tab-pane label="全部" name="all">
         <div class="img-list">
           <el-card class="img-card" v-for="item in list" :key="item.id">
+            <!-- {{item}} -->
             <img :src="item.url" alt />
             <el-row class="operate" type="flex" justify="space-around" align="middle">
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete"></i>
+              <i class="el-icon-star-on"
+              @click="collectOrCancel(item)"
+              :style="{color:item.is_collected?'red':''}"></i>
+              <i class="el-icon-delete" @click="delMaterial(item.id)"></i>
             </el-row>
           </el-card>
         </div>
@@ -76,6 +79,38 @@ export default {
     }
   },
   methods: {
+    // 删除素材
+    delMaterial (id) {
+      // this.$confirm('您确定要删除该素材？').then(() => {
+      //   this.$axios({
+      //     url: `/user/images/${id}`,
+      //     method: 'delete'
+      //   }).then(() => {
+      //     this.getAllMaterial()
+      //   })
+      // })
+      this.$confirm('您确定要删除该素材？').then(() => {
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.getAllMaterial()
+        })
+      })
+    },
+    // 收藏或取消收藏素材
+    collectOrCancel (row) {
+      this.$axios({
+        url: `/user/images/${row.id}`,
+        method: 'put',
+        data: {
+          collect: !row.is_collected
+        }
+      }).then(() => {
+        this.getAllMaterial()
+      })
+    },
+    // 加载素材
     uploadImg (params) {
       this.loading = true
       let form = new FormData()
@@ -111,6 +146,7 @@ export default {
       this.page.currentPage = 1
       this.getAllMaterial()
     },
+    // 获取素材
     getAllMaterial () {
       this.$axios({
         url: '/user/images',

@@ -15,7 +15,9 @@ axios.interceptors.request.use(function (config) {
 }, function () { // 请求失败
 })
 axios.defaults.transformResponse = [function (data) {
-  return JsonBigInt.parse(data)
+  // return JsonBigInt.parse(data)
+  // data有可能是个空字符串 直接处理一下 保证不会报错
+  return data ? JsonBigInt.parse(data) : {}
 }]
 // 响应拦截
 axios.interceptors.response.use(function (response) {
