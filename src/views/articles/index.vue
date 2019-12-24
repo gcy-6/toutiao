@@ -45,17 +45,18 @@
     <el-row class="total">
       <span>共显示0条内容</span>
     </el-row>
-    <el-row v-for="item in 100" :key="item" type="flex" justify="space-between" class="article-item">
+    <el-row v-for="item in list" :key="item.id.toString()" type="flex" justify="space-between" class="article-item">
+      <!-- {{item}} -->
       <el-col :span="14">
         <el-row type="flex">
           <!-- <el-col :span="4"> -->
-            <img src="../../assets/img/avatar.jpg" alt />
+            <img :src="item.cover.images.length?item.cover.images[0]:defaultImg" alt />
           <!-- </el-col> -->
           <!-- <el-col :span="9"> -->
             <div class="info">
-              <p>hhh</p>
-              <el-tag class="tag">标签一</el-tag>
-              <p class="date">2019-12-24 17:53:01</p>
+              <p>{{item.title}}</p>
+              <el-tag class="tag" :type="item.status|filterType">{{item.status|filterStatus}}</el-tag>
+              <p class="date">{{item.pubdate}}</p>
             </div>
           <!-- </el-col> -->
         </el-row>
@@ -83,7 +84,39 @@ export default {
         channels_id: null,
         dateRange: []
       },
-      channels: []
+      channels: [],
+      list: [],
+      defaultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  filters: {
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
     }
   },
   methods: {
@@ -93,10 +126,18 @@ export default {
       }).then(result => {
         this.channels = result.data.channels
       })
+    },
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(result => {
+        this.list = result.data.results
+      })
     }
   },
   created () {
     this.getChannels()
+    this.getArticles()
   }
 }
 </script>
