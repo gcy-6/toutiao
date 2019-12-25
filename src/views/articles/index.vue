@@ -68,7 +68,7 @@
           <span>
             <i class="el-icon-edit"></i>修改
           </span>
-          <span>
+          <span @click="delArticles(item.id)">
             <i class="el-icon-delete"></i> 删除
           </span>
         </el-row>
@@ -136,6 +136,22 @@ export default {
     }
   },
   methods: {
+    // 删除
+    delArticles (id) {
+      this.$confirm('您是否选择删除').then(() => {
+        this.$axios({
+          url: `articles/${id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除文章成功'
+          })
+        })
+        this.getConditionArticle()
+      })
+    },
+
     // 封装
     getConditionArticle () {
       let params = {
@@ -218,6 +234,13 @@ export default {
   }
   .info {
     margin-left: 25px;
+  }
+  .right {
+    span {
+      padding-left: 20px;
+      cursor: pointer
+    }
+
   }
 }
 </style>
