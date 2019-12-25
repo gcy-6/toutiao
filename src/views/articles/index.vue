@@ -45,7 +45,7 @@
     </el-row>
 
     <el-row class="total">
-      <span>共显示0条内容</span>
+      <span>共显示{{page.total}}条内容</span>
     </el-row>
     <el-row v-for="item in list" :key="item.id.toString()" type="flex" justify="space-between" class="article-item">
       <!-- {{item}} -->
@@ -74,6 +74,15 @@
         </el-row>
       </el-col>
     </el-row>
+
+    <!-- 分页组件 -->
+    <el-row type="flex" justify="center" align="middle" style="height:60px">
+      <el-pagination background layout="prev,pager,next"
+      :total="page.total"
+      :current-page="page.currentPage"
+      :page-size="page.pageSize"
+      @current-change="changePage"></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -88,7 +97,12 @@ export default {
       },
       channels: [],
       list: [],
-      defaultImg: require('../../assets/img/avatar.jpg')
+      defaultImg: require('../../assets/img/avatar.jpg'),
+      page: {
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
     }
   },
   filters: {
@@ -122,8 +136,11 @@ export default {
     }
   },
   methods: {
-    changeCondition () {
+    // 封装
+    getConditionArticle () {
       let params = {
+        page: this.page.currentPage,
+        per_page: this.page.pageSize,
         status: this.formData.status === 5 ? null : this.formData.status,
         channel_id: this.formData.channels_id,
         begin_pubdate: this.formData.dateRange.length
@@ -133,6 +150,17 @@ export default {
           this.formData.dateRange.length > 1 ? this.formData.dateRange[1] : null
       }
       this.getArticles(params)
+    },
+    // 改变页码事件
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getConditionArticle()
+    },
+
+    // 组装条件
+    changeCondition () {
+      this.page.currentPage = 1
+      this.getConditionArticle()
     },
     // changeCondition () {
     //   // 组装条件
@@ -158,12 +186,13 @@ export default {
         params
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     }
   },
   created () {
     this.getChannels()
-    this.getArticles()
+    this.getArticles({ page: 1, per_page: 10 })
   }
 }
 </script>
