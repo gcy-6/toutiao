@@ -29,6 +29,9 @@ const routes = [
       path: 'articles',
       component: () => import('../views/articles') // 按需加载
     }, {
+      path: 'publish/:articleId',
+      component: () => import('../views/publish')
+    }, {
       path: 'publish',
       component: () => import('../views/publish')
     }]
