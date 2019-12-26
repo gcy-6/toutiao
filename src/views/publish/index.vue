@@ -25,8 +25,8 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-              <el-button type="primary" @click="publishArticle">发表</el-button>
-              <el-button @click="publishArticle">存入草稿</el-button>
+              <el-button type="primary" @click="publishArticle()">发表</el-button>
+              <el-button @click="publishArticle(true)">存入草稿</el-button>
           </el-form-item>
       </el-form>
   </el-card>
@@ -49,9 +49,9 @@ export default {
         channel_id: null
       },
       publishRules: {
-        title: [{ require: true, message: '标题不能为空' }, { min: 5, max: 30, message: '标题长度需要在5到30字符之间' }],
-        content: [{ require: true, message: '文章内容不能为空' }],
-        channel_id: [{ require: true, message: '频道分类不能为空' }]
+        title: [{ required: true, message: '标题不能为空' }, { min: 5, max: 30, message: '标题长度需要在5到30字符之间' }],
+        content: [{ required: true, message: '文章内容不能为空' }],
+        channel_id: [{ required: true, message: '频道分类不能为空' }]
       }
     }
   },
@@ -63,10 +63,19 @@ export default {
         this.channels = result.data.channels
       })
     },
-    publishArticle () {
-      this.$refs.publishForm.validate(function (isOk) {
+    publishArticle (draft) {
+      this.$refs.publishForm.validate((isOk) => {
         if (isOk) {
-          console.log('校验成功')
+          // console.log('校验成功')
+          this.$axios({
+            url: '/articles',
+            method: 'post',
+            params: { draft },
+            data: this.formData
+
+          }).then(() => {
+            this.$router.push('/home/articles')
+          })
         }
       })
     }
