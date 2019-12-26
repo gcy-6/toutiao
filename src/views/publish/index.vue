@@ -6,7 +6,7 @@
 
       <el-form style="margin-left:50px" label-width="100px">
           <el-form-item label="标题">
-            <el-input style="width:60%"></el-input>
+            <el-input style="width:60%" placeholder="文章名称"></el-input>
           </el-form-item>
           <el-form-item label="内容">
             <el-input type="textarea"></el-input>
@@ -20,8 +20,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="频道">
-            <el-select>
-              <el-option value=''></el-option>
+            <el-select v-model="value">
+              <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -35,6 +35,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      channels: [],
+      value: ''
+    }
+  },
+  methods: {
+    getChannels () {
+      this.$axios({
+        url: '/channels'
+      }).then(result => {
+        this.channels = result.data.channels
+      })
+    }
+  },
+  created () {
+    this.getChannels()
+  }
 
 }
 </script>
