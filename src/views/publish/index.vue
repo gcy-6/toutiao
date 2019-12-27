@@ -13,14 +13,16 @@
             <quill-editor style="height:400px;" v-model="formData.content" type='textarea' :rows="4"></quill-editor>
           </el-form-item>
           <el-form-item prop="type" label="封面" style="margin-top:100px">
-            <el-radio-group v-model="formData.cover.type">
+            <el-radio-group v-model="formData.cover.type" >
               <el-radio :label="1">单图</el-radio>
               <el-radio :label="3">三图</el-radio>
               <el-radio :label="0">无图</el-radio>
               <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
-            {{formData.cover}}
+
+            <!-- {{formData.cover}} -->
           </el-form-item>
+          <cover-image :list="formData.cover.images"></cover-image>
           <el-form-item prop="channel_id" label="频道">
             <el-select v-model="formData.channel_id">
               <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name"></el-option>
