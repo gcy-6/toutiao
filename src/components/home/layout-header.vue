@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus' // 引入公共实例
 export default {
   data () {
     return {
@@ -32,18 +33,32 @@ export default {
   },
   created () {
     // let token = window.localStorage.getItem('user-token')
-    this.$axios({
-      url: '/user/profile'
-      // headers: {
-      //   Authorization: `Bearer ${token}`
-      // }
-    }).then(result => {
-      this.userInfo = result.data
-      // console.log(this.userInfo)
-      // console.log(result)
+    // this.$axios({
+    //   url: '/user/profile'
+    //   // headers: {
+    //   //   Authorization: `Bearer ${token}`
+    //   // }
+    // }).then(result => {
+    //   this.userInfo = result.data
+    //   // console.log(this.userInfo)
+    //   // console.log(result)
+    // })
+    this.getUserInfo()
+    // 实例创建完毕 立刻监听
+    eventBus.$on('updateUserInfoSuccess', () => {
+      // 别人告诉你 它更新了数据 应该立刻处理
+      this.getUserInfo()
     })
   },
   methods: {
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+      //   headers参数
+      }).then(result => {
+        this.userInfo = result.data // 获取用户个人信息
+      })
+    },
     handle (command) {
       if (command === 'lgout') {
         // 清除令牌
@@ -51,6 +66,8 @@ export default {
         this.$router.push('/login')
       } else if (command === 'git') {
         window.location.href = 'https://github.com/shuiruohanyu/89heimatoutiao'
+      } else if (command === 'info') {
+        this.$router.push('/home/account') // 跳转到账户信息页面
       }
     }
   }

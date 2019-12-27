@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus' // 引入了公共的实例
 export default {
   data () {
     return {
@@ -67,7 +68,8 @@ export default {
         method: 'patch',
         data
       }).then(result => {
-        this.formData.photo = result.data.photo // 设置头像地址
+        // this.formData.photo = result.data.photo // 设置头像地址
+        eventBus.$emit('updateUserInfoSuccess') // 触发一个自定义事件 updateUserInfoSuccess
         this.loading = false // 关调弹层
       })
     },
@@ -86,6 +88,7 @@ export default {
               type: 'success',
               message: '保存信息成功'
             })
+            eventBus.$emit('updateUserInfoSuccess') // 触发一个自定义事件 updateUserInfoSuccess
           })
         }
       })
