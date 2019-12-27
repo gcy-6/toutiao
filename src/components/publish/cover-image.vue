@@ -1,14 +1,39 @@
 <template>
   <div class="cover-image">
-    <div class="cover-item" v-for="(item,index) in list" :key="index">
-      <img src="../../assets/img/pic_bg.png" alt />
+    <div class="cover-item" @click="openDialog" v-for="(item,index) in list" :key="index">
+      <img :src="item?item:defaultImg" alt />
     </div>
+    <el-dialog :visible="dialogVisible" @close="closeDialog">
+        <select-image @selectOneImg="receiveImg"></select-image>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['list']
+  props: ['list'],
+  data () {
+    return {
+      dialogVisible: false,
+      defaultImg: require('../../assets/img/pic_bg.png'),
+      selectIndex: -1
+    }
+  },
+  methods: {
+    receiveImg (img) {
+      // alert(img)
+      // list 为props，要想修改必须再次传递
+      this.$emit('clickOneImg', img, this.selectIndex)
+      this.closeDialog()
+    },
+    openDialog (index) {
+      this.selectIndex = index
+      this.dialogVisible = true
+    },
+    closeDialog () {
+      this.dialogVisible = false
+    }
+  }
 }
 </script>
 

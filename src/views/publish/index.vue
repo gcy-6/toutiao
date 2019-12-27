@@ -19,10 +19,10 @@
               <el-radio :label="0">无图</el-radio>
               <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
-
             <!-- {{formData.cover}} -->
           </el-form-item>
-          <cover-image :list="formData.cover.images"></cover-image>
+          <!-- 图片组件 -->
+          <cover-image @clickOneImg="receiveImg" :list="formData.cover.images"></cover-image>
           <el-form-item prop="channel_id" label="频道">
             <el-select v-model="formData.channel_id">
               <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name"></el-option>
@@ -88,6 +88,16 @@ export default {
     // }
   },
   methods: {
+    receiveImg (img, index) {
+      // alert(img)
+      // this.formData.cover.images.map((index, i) => {
+      //   if (i === index) {
+      //     return img
+      //   }
+      //   return i
+      // })
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? img : item)
+    },
     // 只有在点击触发的时候才会触发change
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
