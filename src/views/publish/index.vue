@@ -13,7 +13,7 @@
             <quill-editor style="height:400px;" v-model="formData.content" type='textarea' :rows="4"></quill-editor>
           </el-form-item>
           <el-form-item prop="type" label="封面" style="margin-top:100px">
-            <el-radio-group v-model="formData.cover.type" >
+            <el-radio-group @change="changeType" v-model="formData.cover.type" >
               <el-radio :label="1">单图</el-radio>
               <el-radio :label="3">三图</el-radio>
               <el-radio :label="0">无图</el-radio>
@@ -75,9 +75,21 @@ export default {
           }
         }
       }
-    },
-    'formData.cover.type': function () {
-      // alert(this.formData.cover.type)
+    }
+    // 'formData.cover.type': function () {
+    //   // alert(this.formData.cover.type)
+    //   if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+    //     this.formData.cover.images = []
+    //   } else if (this.formData.cover.type === 1) {
+    //     this.formData.cover.images = ['']
+    //   } else if (this.formData.cover.type === 3) {
+    //     this.formData.cover.images = ['', '', '']
+    //   }
+    // }
+  },
+  methods: {
+    // 只有在点击触发的时候才会触发change
+    changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
         this.formData.cover.images = []
       } else if (this.formData.cover.type === 1) {
@@ -85,9 +97,7 @@ export default {
       } else if (this.formData.cover.type === 3) {
         this.formData.cover.images = ['', '', '']
       }
-    }
-  },
-  methods: {
+    },
     getChannels () {
       this.$axios({
         url: '/channels'
