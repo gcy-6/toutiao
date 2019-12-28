@@ -1,9 +1,12 @@
 // 拦截访问
 import router from '../router'
+import progress from 'nprogress'
+import 'nprogress/nprogress.css'
 // 设置全局前置守卫
 router.beforeEach(function (to, from, next) {
-//   console.log(to)
-// 判断拦截地址
+  progress.start()
+  //   console.log(to)
+  // 判断拦截地址
   // if (to.path !== '/login') {
   if (to.path.startsWith('/home')) {
     // alert(1)
@@ -18,4 +21,9 @@ router.beforeEach(function (to, from, next) {
   } else {
     next()
   }
+})
+// 关闭进度条
+router.afterEach(function () {
+  progress.done()
+  // setTimeout(() => progress.done(), 500)
 })
