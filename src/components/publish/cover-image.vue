@@ -1,6 +1,6 @@
 <template>
   <div class="cover-image">
-    <div class="cover-item" @click="openDialog" v-for="(item,index) in list" :key="index">
+    <div class="cover-item" @click="openDialog(index)" v-for="(item,index) in list" :key="index">
       <img :src="item?item:defaultImg" alt />
     </div>
     <el-dialog :visible="dialogVisible" @close="closeDialog">

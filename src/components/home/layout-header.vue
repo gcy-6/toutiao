@@ -1,7 +1,7 @@
 <template>
   <el-row class="layout-header" type="flex" justify="space-between" align="middle">
     <el-col class="left" :span="6">
-      <i class="el-icon-s-unfold"></i>
+      <i @click="collapseOrOpen" :class="{'el-icon-s-unfold':collapse,'el-icon-s-fold':!collapse}"></i>
       <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col class="right" :span="4">
@@ -25,6 +25,7 @@ import eventBus from '../../utils/eventBus' // 引入公共实例
 export default {
   data () {
     return {
+      collapse: false,
       userInfo: {},
       // 图片限制大小 小于10k的时候会转成base64字符串，而大于10k的时候会改变路径拷贝到静态目录下
       // img死地址，动态地址的话，默认情况下不会转为base64 也不会拷贝
@@ -51,6 +52,11 @@ export default {
     })
   },
   methods: {
+    // 折叠
+    collapseOrOpen () {
+      this.collapse = !this.collapse
+      eventBus.$emit('changeCollapse')
+    },
     getUserInfo () {
       this.$axios({
         url: '/user/profile'
