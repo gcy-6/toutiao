@@ -6,7 +6,7 @@
     </el-col>
     <el-col class="right" :span="4">
       <el-row type="flex" justify="end" align="middle">
-        <img :src="!userInfo.photo?userInfo.photo:defaultImg" alt />
+        <img :src="userInfo.photo?userInfo.photo:defaultImg" alt />
         <el-dropdown @command="handle">
           <span>{{userInfo.name}}</span>
           <el-dropdown-menu slot="dropdown">
@@ -32,7 +32,7 @@ export default {
     }
   },
   created () {
-    // let token = window.localStorage.getItem('user-token')
+    // // let token = window.localStorage.getItem('user-token')
     // this.$axios({
     //   url: '/user/profile'
     //   // headers: {
